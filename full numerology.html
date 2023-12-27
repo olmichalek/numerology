@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Numerology Calculator</title>
+</head>
+<body>
+  <label for="nameInput"><b>Enter your name:</b></label>
+  <input type="text" id="nameInput">
+  <button onclick="calculateNumerology()">Calculate Numerology</button>
+
+ <label for="dateInput">Select a date:</label>
+  <input type="date" id="dateInput">
+    <button onclick="displayDate()">Display Date Number</button>
+	
+
+  <div id="output">
+    <p id="expressionNumber"><strong>Expression Number: </strong></p>
+    <p id="soulNumber"><strong>Soul Number: </strong></p>
+    <p id="personalityNumber"><strong>Personality Number: </strong></p>
+	<p id="whatdate"></p>
+  </div>
+
+  <script>
+    function calculateNumerology() {
+      // Get the input value
+      const name = document.getElementById('nameInput').value.toUpperCase();
+
+      // Define the numerology associations for each letter
+      const letterValues = {
+        A: 1, B: 2, C: 3, D: 4, E: 5, F: 6, G: 7, H: 8, I: 9,
+        J: 1, K: 2, L: 3, M: 4, N: 5, O: 6, P: 7, Q: 8, R: 9,
+        S: 1, T: 2, U: 3, V: 4, W: 5, X: 6, Y: 7, Z: 8
+      }; 
+
+      // Convert the name to an array of numbers
+      const numbersArray = name.split('').map(letter => letterValues[letter] || 0);
+
+      // Calculate the expression number (sum of all letters reduced to a single digit)
+      const expressionNumber = calculateSingleDigit(numbersArray.reduce((acc, num) => acc + num, 0));
+
+      // Calculate the soul number (sum of vowels in the name reduced to a single digit)
+      const vowelNumber = name.split('').filter(letter => 'AEIOU'.includes(letter)).reduce((acc, letter) => acc + letterValues[letter], 0);
+      const soulNumber = calculateSingleDigit(vowelNumber);
+
+      // Calculate the personality number (sum of consonants reduced to a single digit)
+   //   const personalityNumber = calculateSingleDigit(numbersArray.filter(num => num !== letterValues['A'] && num !== letterValues['E'] && num !== letterValues['I'] && num !== letterValues['O'] && num !== letterValues['U']).reduce((acc, num) => acc + num, 0));
+      const personalityNumber = calculateSingleDigit(numbersArray.filter(num => !['A', 'E', 'I', 'O', 'U'].includes(Object.keys(letterValues).find(key => letterValues[key] === num))).reduce((acc, num) => acc + num, 0));
+      // Display the results
+	    document.getElementById('expressionNumber').innerHTML = `<strong><p style="background-color: green; font-size: 16pt;">Expression Number: ${expressionNumber}</p></strong>`;
+      document.getElementById('soulNumber').innerHTML = `<strong><p style="background-color: lightblue; font-size: 16pt;">Soul Number: ${soulNumber}</p></strong>`;
+      document.getElementById('personalityNumber').innerHTML = `<strong><p style="background-color: orange; font-size: 16pt;">Personality Number: ${personalityNumber}</p></strong>`;
+    }
+
+    function calculateSingleDigit(number) {
+      // Reduce a number to a single digit
+      while (number > 9) {
+        number = Array.from(String(number), Number).reduce((acc, num) => acc + num, 0);
+      }
+      return number;
+    }
+	
+	
+	function displayDate() {
+      // Get the date input value
+	  let sum = 0; 
+	  let newsum = 0;
+	  
+	  var firstPara = document.getElementById("whatdate"); 
+	  
+    var dateInput = document.getElementById('dateInput').value;
+	  
+	  var dateWithoutHyphens = dateInput.replace(/-/g, '');
+	  
+	  var singleNumbersArray = dateWithoutHyphens.split('').map(Number);
+	  //creating array of single numbers from date
+	  for (let i = 0; i < singleNumbersArray.length; i++) {
+			sum += singleNumbersArray[i];
+			
+			} 
+			
+			newsum = sum;
+			
+	 while (newsum > 9) {
+       let tempSum = 0;
+
+    // Split the current sum into digits and add them
+      while (newsum > 0) {
+      tempSum += newsum % 10;
+      newsum = Math.floor(newsum / 10);
+    }
+
+    newsum = tempSum;
+  }
+  
+	//Check Life Path Number from your date of birth.   
+	  firstPara.innerHTML = "<p style='background-color: khaki; font-size: 16pt;''>This is the date you are checking:<b> " + dateInput + "</b> and this is sum of all the numbers <b>" + sum + 
+		" </b>and finally this is your <b> life number " + newsum, ".</b></p>"; 
+}
+  </script>
+</body>
+</html>

@@ -1,0 +1,133 @@
+<style>
+#assignNo {
+margin-top: 10px;
+}
+
+
+</style>
+<input type="text" id="mytext"><br>
+<button id="assignNo" onclick = "myFunction();">Assign numbers</button>
+
+<p id="displayOutput"></p>
+
+<script>
+
+//const letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
+ const letterValues = {
+        A: 1, B: 2, C: 3, D: 4, E: 5, F: 6, G: 7, H: 8, I: 9,
+        J: 1, K: 2, L: 3, M: 4, N: 5, O: 6, P: 7, Q: 8, R: 9,
+        S: 1, T: 2, U: 3, V: 4, W: 5, X: 6, Y: 7, Z: 8
+      };
+// You can use the 'lowercaseAlphabet' constant throughout your code
+//console.log(letters); // Output: ['a', 'b', 'c', ..., 'z']
+
+const myButton = document.getElementById("assignNo"); 
+
+function reducetoSingleDigits(lettersNumeric, vowelsNumeric, consonantsNumeric) {
+  let sumLetters = 0;
+  let sumVowels = 0;
+  let sumConsonants = 0;   
+
+  for (let i = 0; i < lettersNumeric.length; i++) {
+    sumLetters += lettersNumeric[i];
+  }
+
+  for (let j = 0; j < vowelsNumeric.length; j++) {
+    sumVowels += vowelsNumeric[j];
+  }
+
+  for (let k = 0; k < consonantsNumeric.length; k++) {
+    sumConsonants += consonantsNumeric[k];
+  }
+
+  // Reduce each sum to a single digit
+  while (sumLetters > 9) {
+    let tempSum = 0;
+
+    // Split the current sum into digits and add them
+    while (sumLetters > 0) {
+      tempSum += sumLetters % 10;
+      sumLetters = Math.floor(sumLetters / 10);
+    }
+
+    sumLetters = tempSum;
+  }
+
+  while (sumVowels > 9) {
+    let tempSum = 0;
+
+    // Split the current sum into digits and add them
+    while (sumVowels > 0) {
+      tempSum += sumVowels % 10;
+      sumVowels = Math.floor(sumVowels / 10);
+    }
+
+    sumVowels = tempSum;
+  }
+
+  while (sumConsonants > 9) {
+    let tempSum = 0;
+
+    // Split the current sum into digits and add them
+    while (sumConsonants > 0) {
+      tempSum += sumConsonants % 10;
+      sumConsonants = Math.floor(sumConsonants / 10);
+    }
+
+    sumConsonants = tempSum;
+  }
+
+  return {
+    sumLetters,
+    sumVowels,
+    sumConsonants,
+  };
+}
+
+
+function myFunction() {
+var myText = document.getElementById("mytext").value;
+const lettersNumeric = [];
+const vowelsNumeric = [];
+const consonantsNumeric = []; 
+for (let i = 0; i < myText.length; i++) {  
+  const letter = myText[i].toUpperCase();
+  const value = letterValues[letter];  //tells you which letter to select. 
+  lettersNumeric.push(value);
+  
+  let value2 = 0;
+  //if (letter !== "A" && letter !== "E" && letter !== "I" && letter !== "O" && letter !== "U") {
+   if (!["A", "E", "I", "O", "U"].includes(letter)) {
+	 value2 = 0; 
+  } else {
+	value2 = value;
+  }
+  if (value2 !== 0) {
+      vowelsNumeric.push(value2);
+    }
+
+let value3 = 0; 
+if (["A", "E", "I", "O", "U"].includes(letter)) {
+	 value3 = 0; 
+  } else {
+	value3 = value;
+  }
+  if (value3 !== 0) {
+      consonantsNumeric.push(value3);
+    }
+  }
+
+const sum = reducetoSingleDigits(lettersNumeric, vowelsNumeric, consonantsNumeric); 
+
+document.getElementById("displayOutput").innerHTML = "Letters: " + lettersNumeric +
+  "<br>Vowels: " + vowelsNumeric +
+  "<br>Consonants: " + consonantsNumeric +
+  "<br><br>Sum of letters: " + sum.sumLetters +
+  "<br>Sum of vowels: " + sum.sumVowels +
+  "<br>Sum of consonants: " + sum.sumConsonants;
+}
+ 
+
+
+
+</script>
